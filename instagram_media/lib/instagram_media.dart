@@ -11,10 +11,7 @@ class InstagramMedia extends StatefulWidget {
   final String appID;
   final String appSecret;
   final int mediaTypes;
-  InstagramMedia(
-      {@required this.appID,
-      @required this.appSecret,
-      @required this.mediaTypes})
+  InstagramMedia({@required this.appID, @required this.appSecret, @required this.mediaTypes})
       : assert(appID != null),
         assert(mediaTypes != null),
         assert(appSecret != null);
@@ -111,7 +108,8 @@ class _InstagramMediaState extends State<InstagramMedia> {
 
   _getShortLivedToken(map) async {
     String urlTwo = 'https://api.instagram.com/oauth/access_token';
-    http.Response response = await http.post(urlTwo, body: map);
+    Uri myUri = Uri.parse(urlTwo);
+    http.Response response = await http.post(myUri, body: map);
     var respData = json.decode(response.body);
     setState(() {
       accessToken = respData['access_token'];
@@ -127,12 +125,10 @@ class _InstagramMediaState extends State<InstagramMedia> {
     var mediaTypes = [];
     var mediaCaptions = [];
     var respData;
-    String urlThree = 'https://graph.instagram.com/' +
-        igUserID +
-        '/media?access_token=' +
-        accessToken +
-        '&fields=timestamp,media_url,media_type,caption';
-    http.Response response = await http.get(urlThree);
+    String urlThree =
+        'https://graph.instagram.com/' + igUserID + '/media?access_token=' + accessToken + '&fields=timestamp,media_url,media_type,caption';
+    Uri myUri = Uri.parse(urlThree);
+    http.Response response = await http.get(myUri);
     respData = (json.decode(response.body))['data'];
     for (var i = 0; i < respData.length; i++) {
       if (widget.mediaTypes == 0 && (respData[i])['media_type'] == 'IMAGE') {
@@ -141,16 +137,13 @@ class _InstagramMediaState extends State<InstagramMedia> {
         mediaIDs.add((respData[i])['id']);
         mediaTypes.add((respData[i])['media_type']);
         mediaCaptions.add((respData[i])['caption']);
-      } else if (widget.mediaTypes == 1 &&
-          (respData[i])['media_type'] == 'VIDEO') {
+      } else if (widget.mediaTypes == 1 && (respData[i])['media_type'] == 'VIDEO') {
         mediaUrls.add((respData[i])['media_url']);
         mediaTimestamps.add((respData[i])['timestamp']);
         mediaIDs.add((respData[i])['id']);
         mediaTypes.add((respData[i])['media_type']);
         mediaCaptions.add((respData[i])['caption']);
-      } else if (widget.mediaTypes == 2 &&
-          ((respData[i])['media_type'] == 'VIDEO' ||
-              (respData[i])['media_type'] == 'IMAGE')) {
+      } else if (widget.mediaTypes == 2 && ((respData[i])['media_type'] == 'VIDEO' || (respData[i])['media_type'] == 'IMAGE')) {
         mediaUrls.add((respData[i])['media_url']);
         mediaTimestamps.add((respData[i])['timestamp']);
         mediaIDs.add((respData[i])['id']);
