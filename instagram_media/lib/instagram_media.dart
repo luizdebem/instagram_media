@@ -114,6 +114,8 @@ class _InstagramMediaState extends State<InstagramMedia> {
     Uri myUri = Uri.parse(urlTwo);
     http.Response response = await http.post(myUri, body: map);
     var respData = json.decode(response.body);
+    print("respdata token");
+    print(respData);
     setState(() {
       accessToken = respData['access_token'];
       igUserID = (respData['user_id']).toString();
@@ -136,6 +138,8 @@ class _InstagramMediaState extends State<InstagramMedia> {
     Uri myUri = Uri.parse(urlThree);
     http.Response response = await http.get(myUri);
     respData = (json.decode(response.body))['data'];
+    print("respData getMedia");
+    print(respData);
     for (var i = 0; i < respData.length; i++) {
       if (widget.mediaTypes == 0 && (respData[i])['media_type'] == 'IMAGE') {
         mediaUrls.add((respData[i])['media_url']);
