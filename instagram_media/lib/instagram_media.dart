@@ -38,6 +38,7 @@ class _InstagramMediaState extends State<InstagramMedia> {
   String accessToken;
   String accessCode;
   String igUserID;
+  String igUsername;
 
   int stage = 0;
 
@@ -114,8 +115,6 @@ class _InstagramMediaState extends State<InstagramMedia> {
     Uri myUri = Uri.parse(urlTwo);
     http.Response response = await http.post(myUri, body: map);
     var respData = json.decode(response.body);
-    print("respdata token");
-    print(respData);
     setState(() {
       accessToken = respData['access_token'];
       igUserID = (respData['user_id']).toString();
@@ -134,12 +133,10 @@ class _InstagramMediaState extends State<InstagramMedia> {
         igUserID +
         '/media?access_token=' +
         accessToken +
-        '&fields=timestamp,media_url,media_type,caption';
+        '&fields=timestamp,media_url,media_type,caption,username';
     Uri myUri = Uri.parse(urlThree);
     http.Response response = await http.get(myUri);
     respData = (json.decode(response.body))['data'];
-    print("respData getMedia");
-    print(respData);
     for (var i = 0; i < respData.length; i++) {
       if (widget.mediaTypes == 0 && (respData[i])['media_type'] == 'IMAGE') {
         mediaUrls.add((respData[i])['media_url']);
@@ -147,6 +144,7 @@ class _InstagramMediaState extends State<InstagramMedia> {
         mediaIDs.add((respData[i])['id']);
         mediaTypes.add((respData[i])['media_type']);
         mediaCaptions.add((respData[i])['caption']);
+        igUsername = (respData[i])["username"];
       } else if (widget.mediaTypes == 1 &&
           (respData[i])['media_type'] == 'VIDEO') {
         mediaUrls.add((respData[i])['media_url']);
@@ -154,6 +152,7 @@ class _InstagramMediaState extends State<InstagramMedia> {
         mediaIDs.add((respData[i])['id']);
         mediaTypes.add((respData[i])['media_type']);
         mediaCaptions.add((respData[i])['caption']);
+        igUsername = (respData[i])["username"];
       } else if (widget.mediaTypes == 2 &&
           ((respData[i])['media_type'] == 'VIDEO' ||
               (respData[i])['media_type'] == 'IMAGE')) {
@@ -162,12 +161,14 @@ class _InstagramMediaState extends State<InstagramMedia> {
         mediaIDs.add((respData[i])['id']);
         mediaTypes.add((respData[i])['media_type']);
         mediaCaptions.add((respData[i])['caption']);
+        igUsername = (respData[i])["username"];
       } else if (widget.mediaTypes == 3) {
         mediaUrls.add((respData[i])['media_url']);
         mediaTimestamps.add((respData[i])['timestamp']);
         mediaIDs.add((respData[i])['id']);
         mediaTypes.add((respData[i])['media_type']);
         mediaCaptions.add((respData[i])['caption']);
+        igUsername = (respData[i])["username"];
       }
     }
 
@@ -177,6 +178,7 @@ class _InstagramMediaState extends State<InstagramMedia> {
       mediaIDs,
       mediaTypes,
       mediaCaptions,
+      igUsername,
       accessToken
     ];
 
