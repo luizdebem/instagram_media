@@ -74,7 +74,7 @@ class _InstagramMediaState extends State<InstagramMedia> {
   @override
   Widget build(BuildContext context) {
     String urlOne =
-        "https://instagram.com/oauth/authorize/?client_id=${widget.appID}&redirect_uri=https://httpstat.us/200&&scope=user_profile,user_media&response_type=code&hl=en";
+        "https://api.instagram.com/oauth/authorize/?client_id=${widget.appID}&redirect_uri=https://httpstat.us/200&&scope=user_profile,user_media&response_type=code&hl=en";
 
     return Scaffold(
         body: StreamBuilder(
