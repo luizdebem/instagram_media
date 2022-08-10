@@ -88,6 +88,8 @@ class _InstagramMediaState extends State<InstagramMedia> {
                     centerTitle: true,
                   ),
                   url: urlOne,
+                  appCacheEnabled: false,
+                  clearCache: true,
                 );
               } else if (stageSnap.data == 1) {
                 return Container(
